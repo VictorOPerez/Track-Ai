@@ -13,3 +13,6 @@ av
 openmim
 tqdm
 psutil
+Flask
+flask_cors
+werkzeug

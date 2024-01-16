@@ -5,7 +5,7 @@ import os
 import numpy as np
 from app import model
 
-def get_frames_from_video(video_input, video_state):
+def get_frames_from_video(video_input):
     """
     Args:
         video_path:str
@@ -39,7 +39,7 @@ def get_frames_from_video(video_input, video_state):
                 if current_memory_usage > 90:
                     operation_log = [("Memory usage is too high (>90%). Stop the video extraction. Please reduce the video resolution or frame rate.", "Error")]
                     print("Memory usage is too high (>90%). Please reduce the video resolution or frame rate.")
-                    break
+                    # break
             else:
                 break
     except (OSError, TypeError, ValueError, KeyError, SyntaxError) as e:
@@ -58,10 +58,10 @@ def get_frames_from_video(video_input, video_state):
         "video_name": os.path.split(video_path)[-1],
 
         # Contiene una lista de los fotogramas originales del video. Estos son los fotogramas sin modificar.
-        "origin_images": frames,
+        "F_To_Image": frames,
 
         # Almacena una copia de los fotogramas originales. Esto sugiere que estos fotogramas podrían ser modificados o 'pintados' en procesos posteriores.
-        "painted_images": frames.copy(),
+        "F_Orig": frames.copy(),
 
         # Crea una lista de máscaras, inicialmente establecidas en cero (negro) para cada fotograma del video. 
         # Estas máscaras son arrays de NumPy del mismo tamaño que los fotogramas y se utilizan para operaciones de procesamiento de imágenes, como seguimiento o edición de imágenes.
@@ -71,19 +71,19 @@ def get_frames_from_video(video_input, video_state):
         "logits": [None]*len(frames),
 
         # Establece un contador o índice para el fotograma seleccionado actualmente, iniciando en 0.
-        "select_frame_number": 0,
+        "indice_F_Act": 0,
 
-        # Almacena la tasa de fotogramas por segundo (fps) del video. Esta línea parece estar incompleta, ya que falta el valor de 'fps'.
+        # Almacena la tasa de fotogramas por segundo (fps) del video.
         "fps":fps # Valor faltante aquí
     }
 
 
     # Formatea la información del video para su presentación.
     video_info = "Video Name: {}, FPS: {}, Total Frames: {}, Image Size:{}".format(video_state["video_name"], video_state["fps"], len(frames), image_size)
-
+    print(f"fotogramos{video_state["fps"]},path{video_path}")
     # Restablece y establece la imagen en el controlador del modelo.
     model.samcontroler.sam_controler.reset_image()
-    model.samcontroler.sam_controler.set_image(video_state["origin_images"][0])
+    model.samcontroler.sam_controler.set_image(video_state["F_To_Image"][0])
 
-    # Devuelve el estado del video, la información del video, el primer fotograma y actualizaciones de la interfaz gráfica.
-    return video_state, video_info, video_state["origin_images"][0]
+    # Devuelve el estado del video, la información del video,
+    return video_state
