@@ -19,7 +19,8 @@ class Track_Any():
         self.baseinpainter = BaseInpainter(self.e2fgvi_checkpoint, args.device) 
  
     def predict(self,  image, prompts):
-        imagePaited, masks= self.samcontroler.predict(image,image, prompts)
+        print("aqui se ejecuto dentro de el metodo predictor 5")
+        imagePaited, masks= self.samcontroler.predict(image, prompts)
         return  imagePaited, masks
 
     def generator(self, images: list, template_mask:np.ndarray):

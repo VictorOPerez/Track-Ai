@@ -3,9 +3,9 @@ import cv2
 import psutil
 import os
 import numpy as np
-from app import model
 
 def get_frames_from_video(video_input):
+    from app import model
 
     video_path = video_input  # Almacena la ruta del video proporcionada en la variable video_path.
     frames = []  # Inicializa una lista para almacenar los fotogramas del video.

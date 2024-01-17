@@ -1,4 +1,3 @@
-import gradio as gr
 import argparse
 import gdown
 import cv2
@@ -32,7 +31,7 @@ from track_anything import parse_augment
 
 args = parse_augment()
 args.port = 12212
-args.device = "cuda:3"
+args.device = "cuda"
 # args.mask_save = True
 SAM_checkpoint,xmem_checkpoint,e2fgvi_checkpoint =Download()
 
@@ -94,6 +93,7 @@ def addMask():
         # Obtiene el JSON de la solicitud,
         data = request.get_json()
         # print(data)
+        print("AQUI SE EJECUTO 1")
         imagen, video, index = sam_get_mask_and_refine(video,data)
         image_to_save = cv2.cvtColor(imagen, cv2.COLOR_RGB2BGR)
         cv2.imwrite('image/image.jpg', image_to_save)
@@ -111,5 +111,5 @@ def addMask():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=3000, host="0.0.0.0")
 

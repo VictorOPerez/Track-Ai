@@ -1,7 +1,7 @@
 from segment_anything import sam_model_registry, SamPredictor, SamAutomaticMaskGenerator
 import torch
 import numpy as np
-from .painter import mask_painter, point_painter
+from .mask_painter import mask_painter
 
 
 
@@ -31,14 +31,17 @@ class Sam_segment:
     def predict(self, image, prompts):
                
         self.predictor.set_image(image)
-        
+        print("aqui se ejecuto dentro de la Clase Sam_segment 6")
+
         masks, _, _ = self.predictor.predict(
                                               point_coords=prompts["point"],
                                               point_labels=prompts["label"],
                                               multimask_output=False,
                                           )
-        
-        imagePaited = mask_painter(image,masks)
+        print("aqui se ejecuto dentro de la Clase Sam_segment se optuvo la prediccion 7")
+
+        imagePaited = mask_painter(image, masks)
         # imagen pintada
+        print("aqui se ejecuto dentro de la Clase Sam_segment se optuvo la imagen pintada 7")
         
         return imagePaited, masks
