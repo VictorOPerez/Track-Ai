@@ -5,7 +5,7 @@ from PIL import Image
 import copy
 import time
 
-
+# Función colormap: Esta función genera una lista de colores. Los colores se generan como una lista de valores RGB y se utilizan para visualizar diferentes componentes en las imágenes (como máscaras o contornos).
 def colormap(rgb=True):
 	color_list = np.array(
 		[
@@ -101,7 +101,7 @@ def colormap(rgb=True):
 color_list = colormap()
 color_list = color_list.astype('uint8').tolist()
 
-
+# Función vis_add_mask: Esta función toma una imagen, máscaras de fondo y contorno, y colores para ambos, y aplica estas máscaras a la imagen. Modifica la imagen original superponiendo estas máscaras con transparencia y colores específicos.
 def vis_add_mask(image, background_mask, contour_mask, background_color, contour_color, background_alpha, contour_alpha):
 	background_color = np.array(background_color)
 	contour_color = np.array(contour_color)
@@ -118,7 +118,7 @@ def vis_add_mask(image, background_mask, contour_mask, background_color, contour
 
 	return image.astype('uint8')
 
-
+# Funciones mask_generator_*: Estas funciones (mask_generator_00, mask_generator_01, mask_generator_10, mask_generator_11) generan máscaras basadas en el radio del fondo y del contorno. Utilizan transformaciones de distancia para determinar qué píxeles pertenecen al fondo y cuáles al contorno de la máscara.
 def mask_generator_00(mask, background_radius, contour_radius):
 	# no background width when '00'
 	# distance map
@@ -179,7 +179,7 @@ def mask_generator_11(mask, background_radius, contour_radius):
 	contour_mask = contour_mask / np.max(contour_mask)
 	return background_mask, contour_mask
 
-
+# Función mask_painter: Es la función principal que aplica efectos visuales a una máscara sobre una imagen. Puede aplicar desenfoque al fondo y resaltar el contorno de la máscara con un color y grosor específicos. Soporta diferentes modos para ajustar cómo se aplica el desenfoque y el resaltado.
 def mask_painter(input_image, input_mask, background_alpha=0.5, background_blur_radius=7, contour_width=3, contour_color=3, contour_alpha=1, mode='11'):
 	"""
 	Input:

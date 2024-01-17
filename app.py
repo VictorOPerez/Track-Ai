@@ -27,7 +27,7 @@ except:
     os.system("mim install mmcv")
 
 from resources.Download import Download
-from track_anything import TrackingAnything
+from Track_Any import Track_Any
 from track_anything import parse_augment
 
 args = parse_augment()
@@ -37,7 +37,7 @@ args.device = "cuda:3"
 SAM_checkpoint,xmem_checkpoint,e2fgvi_checkpoint =Download()
 
 # initialize sam, xmem, e2fgvi model
-model = TrackingAnything(SAM_checkpoint, xmem_checkpoint, e2fgvi_checkpoint,args)
+model = Track_Any(SAM_checkpoint, xmem_checkpoint, e2fgvi_checkpoint,args)
 
 
 
@@ -94,7 +94,10 @@ def addMask():
         # Obtiene el JSON de la solicitud,
         data = request.get_json()
         # print(data)
-        sam_get_mask_and_refine(video,data)
+        imagen, video, index = sam_get_mask_and_refine(video,data)
+        image_to_save = cv2.cvtColor(imagen, cv2.COLOR_RGB2BGR)
+        cv2.imwrite('image/image.jpg', image_to_save)
+
         # Comprueba si se recibió un JSON válido
         if data is not None:
             # data ahora es un diccionario de Python
