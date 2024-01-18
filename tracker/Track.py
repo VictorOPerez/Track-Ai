@@ -57,20 +57,12 @@ class BaseTracker:
 
     @torch.no_grad()
     def track(self, frame, first_frame_annotation=None):
-        """
-        Input: 
-        frames: numpy arrays (H, W, 3)
-        logit: numpy array (H, W), logit
-
-        Output:
-        mask: numpy arrays (H, W)
-        logit: numpy arrays, probability map (H, W)
-        painted_image: numpy array (H, W, 3)
-        """
-
+        
         if first_frame_annotation is not None:   # first frame mask
             # initialisation
             mask, labels = self.mapper.convert_mask(first_frame_annotation)
+
+            
             mask = torch.Tensor(mask).to(self.device)
             self.tracker.set_all_labels(list(self.mapper.remappings.values()))
         else:

@@ -100,11 +100,7 @@ def addMask():
         image_to_save = cv2.cvtColor(imagen, cv2.COLOR_RGB2BGR)
         cv2.imwrite('image/image.jpg', image_to_save)
         print("imagen guardada con exito")
-
-        # Comprueba si se recibió un JSON válido
         if data is not None:
-            # data ahora es un diccionario de Python
-            # Puedes trabajar con los datos como un diccionario
             return jsonify({"message": "JSON recibido correctamente", "data": data}), 200
         else:
             return jsonify({"message": "No se recibió JSON válido"}), 400
