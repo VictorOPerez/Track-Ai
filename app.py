@@ -71,9 +71,10 @@ def upload_file():
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        cap = cv2.VideoCapture(file_path)  # Intenta abrir el video para la lectura de fotogramas.
-        fps = cap.get(cv2.CAP_PROP_FPS) 
-        video= get_frames_from_video(file_path)
+        fps = get_frames_from_video(file_path)
+        # cap = cv2.VideoCapture(file_path)  # Intenta abrir el video para la lectura de fotogramas.
+        # fps = cap.get(cv2.CAP_PROP_FPS) 
+        # video= get_frames_from_video(file_path)
         # print(video)
         response_data = {
       "status": "success",
