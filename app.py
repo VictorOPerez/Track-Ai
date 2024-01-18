@@ -92,8 +92,6 @@ def addMask():
         # video= get_frames_from_video(file_path)
         videoId=2
         ruta_copy, ruta_mask = sam_get_mask_and_refine(videoId,dataPuntos)
-        image_to_save = cv2.cvtColor(imagen, cv2.COLOR_RGB2BGR)
-        cv2.imwrite('image/image.jpg', image_to_save)
         print("imagen guardada con exito")
         if dataPuntos is not None:
             return jsonify({"message": "JSON recibido correctamente", "data": dataPuntos}), 200
