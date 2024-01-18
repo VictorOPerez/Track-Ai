@@ -181,34 +181,13 @@ def mask_generator_11(mask, background_radius, contour_radius):
 
 # Función mask_painter: Es la función principal que aplica efectos visuales a una máscara sobre una imagen. Puede aplicar desenfoque al fondo y resaltar el contorno de la máscara con un color y grosor específicos. Soporta diferentes modos para ajustar cómo se aplica el desenfoque y el resaltado.
 def mask_painter(input_image, input_mask, background_alpha=0.5, background_blur_radius=7, contour_width=3, contour_color=3, contour_alpha=1, mode='11'):
-			"""
-			Input:
-			input_image: numpy array
-			input_mask: numpy array
-			background_alpha: transparency of background, [0, 1], 1: all black, 0: do nothing
-			background_blur_radius: radius of background blur, must be odd number
-			contour_width: width of mask contour, must be odd number
-			contour_color: color index (in color map) of mask contour, 0: black, 1: white, >1: others
-			contour_alpha: transparency of mask contour, [0, 1], if 0: no contour highlighted
-			mode: painting mode, '00', no blur, '01' only blur contour, '10' only blur background, '11' blur both
-
-			Output:
-			painted_image: numpy array
-			"""
-			# assert input_image.shape[:2] == input_mask.shape, 'different shape'
-			print("DENTRO DE LA FUNCION PINTER 1")
-			# assert background_blur_radius % 2 * contour_width % 2 > 0, 'background_blur_radius and contour_width must be ODD'
-			# assert mode in ['00', '01', '10', '11'], 'mode should be 00, 01, 10, or 11'
-
-			print("DENTRO DE LA FUNCION PINTER 2")
-			# downsample input image and mask
+			
 			width, height = input_image.shape[0], input_image.shape[1]
 			res = 1024
-			ratio = min(1.0 * res / max(width, height), 1.0)  
+			ratio = min(1.0 * res / max(width, height), 1.0) 
 			input_image = cv2.resize(input_image, (int(height*ratio), int(width*ratio)))
-			input_mask = cv2.resize(input_mask, (int(height*ratio), int(width*ratio)))
-			print("DENTRO DE LA FUNCION PINTER 3")
-			
+			input_mask = input_mask.astype(np.uint8) * 255
+			input_mask = cv2.resize(input_mask, (int(height*ratio), int(width*ratio)))			
 			# 0: background, 1: foreground
 			msk = np.clip(input_mask, 0, 1)
 
@@ -219,10 +198,8 @@ def mask_painter(input_image, input_mask, background_alpha=0.5, background_blur_
 			background_mask, contour_mask = generator_dict[mode](msk, background_radius, contour_radius)
 
 			# paint
-			print("DENTRO DE LA FUNCION PINTER 4")
 			painted_image = vis_add_mask\
 				(input_image, background_mask, contour_mask, color_list[0], color_list[contour_color], background_alpha, contour_alpha)	# black for background
-			print("DENTRO DE LA FUNCION PINTER 5")
 			return painted_image
 
 

@@ -33,14 +33,14 @@ class Sam_segment:
         self.predictor.set_image(image)
         print("aqui se ejecuto dentro de la Clase Sam_segment 6")
 
-        masks, _, _ = self.predictor.predict(
+        masks, scores, _ = self.predictor.predict(
                                               point_coords=prompts["point"],
                                               point_labels=prompts["label"],
                                               multimask_output=False,
                                           )
         print("aqui se ejecuto dentro de la Clase Sam_segment se optuvo la prediccion 7")
 
-        imagePaited = mask_painter(image, masks)
+        imagePaited = mask_painter(image, masks[np.argmax(scores)].astype('uint8'))
         # imagen pintada
         print("aqui se ejecuto dentro de la Clase Sam_segment se optuvo la imagen pintada 7")
         

@@ -104,10 +104,12 @@ color_list = color_list.astype('uint8').tolist()
 
 
 def vis_add_mask(image, mask, color, alpha):
-	color = np.array(color_list[color])
-	mask = mask > 0.5
-	image[mask] = image[mask] * (1-alpha) + color * alpha
-	return image.astype('uint8')
+		if mask.shape[0] != image.shape[0] or mask.shape[1] != image.shape[1]:
+			mask = cv2.resize(mask, (image.shape[1], image.shape[0]))
+			color = np.array(color_list[color])
+			mask = mask > 0.5
+			image[mask] = image[mask] * (1-alpha) + color * alpha
+			return image.astype('uint8')
 
 def point_painter(input_image, input_points, point_color=5, point_alpha=0.9, point_radius=15, contour_color=2, contour_width=5):
 	h, w = input_image.shape[:2]
@@ -135,24 +137,35 @@ def point_painter(input_image, input_points, point_color=5, point_alpha=0.9, poi
 	return painted_image
 
 def mask_painter(input_image, input_mask, mask_color=5, mask_alpha=0.7, contour_color=1, contour_width=3):
-	assert input_image.shape[:2] == input_mask.shape, 'different shape between image and mask'
+	# assert input_image.shape[:2] == input_mask.shape, 'different shape between image and mask'
 	# 0: background, 1: foreground
 	mask = np.clip(input_mask, 0, 1)
+	print("DENTRO DE LA FUNCION PINTER 1")
 	contour_radius = (contour_width - 1) // 2
 
+	mask = input_mask.astype(np.uint8) * 255
+
 	dist_transform_fore = cv2.distanceTransform(mask, cv2.DIST_L2, 3)
+	print("DENTRO DE LA FUNCION PINTER 2")
 	dist_transform_back = cv2.distanceTransform(1-mask, cv2.DIST_L2, 3)
+	print("DENTRO DE LA FUNCION PINTER 3")
 	dist_map = dist_transform_fore - dist_transform_back
+	print("DENTRO DE LA FUNCION PINTER 4")
 	# ...:::!!!:::...
 	contour_radius += 2
 	contour_mask = np.abs(np.clip(dist_map, -contour_radius, contour_radius))
+	print("DENTRO DE LA FUNCION PINTER 5")
 	contour_mask = contour_mask / np.max(contour_mask)
 	contour_mask[contour_mask>0.5] = 1.
+	print("DENTRO DE LA FUNCION PINTER 6")
 
 	# paint mask
+	print("DENTRO DE LA FUNCION PINTER 7")
 	painted_image = vis_add_mask(input_image.copy(), mask.copy(), mask_color, mask_alpha)
+	print("DENTRO DE LA FUNCION PINTER 8")
 	# paint contour
 	painted_image = vis_add_mask(painted_image.copy(), 1-contour_mask, contour_color, 1)
+	print("DENTRO DE LA FUNCION PINTER 9")
 
 	return painted_image
 

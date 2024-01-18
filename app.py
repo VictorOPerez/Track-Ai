@@ -94,9 +94,12 @@ def addMask():
         data = request.get_json()
         # print(data)
         print("AQUI SE EJECUTO 1")
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], "Download_2.mp4")
+        video= get_frames_from_video(file_path)
         imagen, video, index = sam_get_mask_and_refine(video,data)
         image_to_save = cv2.cvtColor(imagen, cv2.COLOR_RGB2BGR)
         cv2.imwrite('image/image.jpg', image_to_save)
+        print("imagen guardada con exito")
 
         # Comprueba si se recibió un JSON válido
         if data is not None:
