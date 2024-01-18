@@ -1,7 +1,7 @@
 import sqlite3
 
 def obtener_ruta_frame(video_id, frame_indice):
-    conn = sqlite3.connect('mydatabase.db')
+    conn = sqlite3.connect('dbVideos.db')
     try:
         cursor = conn.cursor()
         cursor.execute('''SELECT ruta_archivo FROM framesData

@@ -11,7 +11,7 @@ from db.funcionesDb.registrar_frame_en_bd import registrar_frame_en_bd
 def get_frames_from_video(video_path):
     from app import model
     try:
-        conn = sqlite3.connect('mydatabase.db')
+        conn = sqlite3.connect('dbVideos.db')
         # frames = []  # Inicializa una lista para almacenar los fotogramas del video.
         # user_name = time.time()  # Genera un identificador único para el usuario basado en el tiempo actual.
         
