@@ -1,25 +1,26 @@
 
 from resources.get_prompt import get_prompt
+from db.consultaDb import obtener_ruta_frame
+from db.funcionesDb import guardar_imagen_modificada
 import numpy as np
 
-def sam_get_mask_and_refine(video_state, point_prompt):
+def sam_get_mask_and_refine(videoId, point_prompt):
     from app import model   
     print("aqui se ejecuto dentro de sam_get_mas_and 2")
     prompt = get_prompt(point_prompt)
     
-    print("aqui se ejecuto antes de index")
     index =prompt["index"]
-    print("aqui se ejecuto despues de index")
-    print(video_state,"VALOR DE VIDEO_STATE")
-    print(index,type(index),"VALOR DE INDEX")
-    image  = video_state["fcopy"][index]
-    print("aqui despues de imagen")
+    ruta_img, ruta_copy, ruta_mask= obtener_ruta_frame(videoId,index)
 
     print("aqui se ejecuto antes del metodo predictor 4")
-    imagen, mask = model.predict(image,prompt)
 
-    video_state["masks"][index]= mask
-    video_state["fcopy"][index]= imagen
+    imagen, mask = model.predict(ruta_copy , prompt)
+    guardar_imagen_modificada(ruta_copy , imagen)
+    guardar_imagen_modificada(ruta_mask,mask)
 
-    return imagen, video_state, index
+    print("imagen modificada guardada")
+    return ruta_copy, ruta_mask
+
+
+
 

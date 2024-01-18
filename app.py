@@ -48,8 +48,6 @@ CORS(app, supports_credentials=True)
 
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
-video={}
-
 
 @app.route('/')
 def index():
@@ -61,7 +59,7 @@ def index():
     
 @app.route('/api/upload_video', methods=['POST'])
 def upload_file():
-    global video
+
     if 'video' not in request.files:
         return 'No video part'
     file = request.files['video']
@@ -72,10 +70,7 @@ def upload_file():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
         fps = get_frames_from_video(file_path)
-        # cap = cv2.VideoCapture(file_path)  # Intenta abrir el video para la lectura de fotogramas.
-        # fps = cap.get(cv2.CAP_PROP_FPS) 
-        # video= get_frames_from_video(file_path)
-        # print(video)
+
         response_data = {
       "status": "success",
       "fps": fps,
@@ -88,21 +83,20 @@ def upload_file():
     
 @app.route('/api/addMask', methods=['POST'])
 def addMask():
-    global video
-    # print(video)
     try:
         # Obtiene el JSON de la solicitud,
-        data = request.get_json()
+        dataPuntos = request.get_json()
         # print(data)
         print("AQUI SE EJECUTO 1")
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], "Download_2.mp4")
-        video= get_frames_from_video(file_path)
-        imagen, video, index = sam_get_mask_and_refine(video,data)
+        # video= get_frames_from_video(file_path)
+        videoId=2
+        ruta_copy, ruta_mask = sam_get_mask_and_refine(videoId,dataPuntos)
         image_to_save = cv2.cvtColor(imagen, cv2.COLOR_RGB2BGR)
         cv2.imwrite('image/image.jpg', image_to_save)
         print("imagen guardada con exito")
-        if data is not None:
-            return jsonify({"message": "JSON recibido correctamente", "data": data}), 200
+        if dataPuntos is not None:
+            return jsonify({"message": "JSON recibido correctamente", "data": dataPuntos}), 200
         else:
             return jsonify({"message": "No se recibió JSON válido"}), 400
 
