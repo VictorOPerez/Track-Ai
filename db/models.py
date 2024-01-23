@@ -1,9 +1,7 @@
 import sqlite3
 
-def create_tables(conn):
+def create_tables(cursor):
     try:
-      cursor = conn.cursor()
-
       # cursor.execute('''CREATE TABLE IF NOT EXISTS User (
       #                         id INTEGER PRIMARY KEY AUTOINCREMENT,
       #                         username TEXT NOT NULL UNIQUE,
@@ -22,7 +20,7 @@ def create_tables(conn):
       cursor.execute('''CREATE TABLE IF NOT EXISTS Videos (
                               video_id INTEGER PRIMARY KEY AUTOINCREMENT,
                               fecha_subida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                              fps REAL NOT NULL,
+                              fps REAL NOT NULL
                           )''')
       
       cursor.execute('''CREATE TABLE IF NOT EXISTS framesData (
@@ -35,8 +33,7 @@ def create_tables(conn):
                           )''')
     except sqlite3.Error as e:
             print(f"An error occurred: {e.args[0]}")
-    finally:
-        cursor.close()
-    conn.commit()
+
+   
 
     

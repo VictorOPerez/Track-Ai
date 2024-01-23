@@ -20,7 +20,7 @@ class Track_Any():
  
     def predict(self,  image, prompts):
         print("aqui se ejecuto dentro de el metodo predictor 5")
-        imagePaited, masks= self.samcontroler.predict(image, prompts)
+        imagePaited, masks = self.samcontroler.predict(image, prompts)
         return  imagePaited, masks
 
     def generator(self, images: list, template_mask:np.ndarray):

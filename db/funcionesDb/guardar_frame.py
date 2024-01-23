@@ -7,6 +7,7 @@ def guardar_frame(video_id, frame, indice,tipo, formato='png'):
 
     if not os.path.exists(ruta_carpeta):
         os.makedirs(ruta_carpeta)
+        print()
 
     nombre_archivo = f"frame_{indice}_{tipo}.{formato}"
     ruta_archivo = os.path.join(ruta_carpeta, nombre_archivo)

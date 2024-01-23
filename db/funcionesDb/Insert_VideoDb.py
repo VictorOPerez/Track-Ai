@@ -1,20 +1,21 @@
 import sqlite3
-from crear_carpeta_para_video import crear_carpeta_para_video
+from db.funcionesDb.crear_carpeta_para_video import crear_carpeta_para_video
 
-def Insert_VideoDb(conn, fps):
-    # video_data es un diccionario con el título, descripción, fecha de subida, etc.
+def Insert_VideoDb(cursor, fps):
+
+      print("insert video despues")
+
       try:
-          cursor = conn.cursor()
-          
+                  
           # Insertar la información del video en la base de datos
           cursor.execute('''INSERT INTO Videos ( fecha_subida, fps)
                   VALUES (CURRENT_TIMESTAMP, ?)''',
-                  (  fps))
+                  (  fps, ))
           
           video_id = cursor.lastrowid          
-          conn.commit()
           crear_carpeta_para_video(video_id)
-             
+          print("insert video id ", video_id)
+
           return video_id
       except sqlite3.Error as e:
           print(f"An error occurred: {e.args[0]}")

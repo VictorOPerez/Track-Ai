@@ -74,6 +74,8 @@ def upload_file():
         response_data = {
       "status": "success",
       "fps": fps,
+
+      
       }
 
       
@@ -90,8 +92,8 @@ def addMask():
         print("AQUI SE EJECUTO 1")
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], "Download_2.mp4")
         # video= get_frames_from_video(file_path)
-        videoId=2
-        ruta_copy, ruta_mask = sam_get_mask_and_refine(videoId,dataPuntos)
+        videoId=1
+        ruta_mask = sam_get_mask_and_refine(videoId,dataPuntos)
         print("imagen guardada con exito")
         if dataPuntos is not None:
             return jsonify({"message": "JSON recibido correctamente", "data": dataPuntos}), 200

@@ -200,7 +200,7 @@ def mask_painter(input_image, input_mask, background_alpha=0.5, background_blur_
 			# paint
 			painted_image = vis_add_mask\
 				(input_image, background_mask, contour_mask, color_list[0], color_list[contour_color], background_alpha, contour_alpha)	# black for background
-			return painted_image
+			return painted_image, input_mask
 
 
 if __name__ == '__main__':

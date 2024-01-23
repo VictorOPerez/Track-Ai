@@ -40,8 +40,8 @@ class Sam_segment:
                                           )
         print("aqui se ejecuto dentro de la Clase Sam_segment se optuvo la prediccion 7")
 
-        imagePaited = mask_painter(image, masks[np.argmax(scores)].astype('uint8'))
+        imagePaited,input_mask = mask_painter(image, masks[np.argmax(scores)].astype('uint8'))
         # imagen pintada
         print("aqui se ejecuto dentro de la Clase Sam_segment se optuvo la imagen pintada 7")
         
-        return imagePaited, masks
+        return imagePaited, input_mask
